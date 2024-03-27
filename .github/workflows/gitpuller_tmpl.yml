@@ -7,7 +7,6 @@ on:
     secrets:
       GITPULLER_KEY:
         required: false
-        type: string
 jobs:
   deployment:
     runs-on: ubuntu-latest
