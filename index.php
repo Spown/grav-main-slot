@@ -6,7 +6,7 @@
     <title>grav-main-slot</title>
 </head>
 <body>
-    <?php $plugins = glob("plugins/*/index.php");?>
+    <?php $plugins = glob("user/plugins/*/index.php");?>
     <div>Plugins (<?= count($plugins)?>):
         <ol>
         <?php foreach ($plugins as $plugin):?>

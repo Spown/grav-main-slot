@@ -1,0 +1,7 @@
+.*/
+*.log
+
+user/plugins/
+user/themse/
+
+gitpuller_config.php
