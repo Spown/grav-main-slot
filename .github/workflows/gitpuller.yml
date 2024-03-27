@@ -1,7 +1,7 @@
 on: [push]
 jobs:
   deployment:
-    uses: "${{ github.repository }}/.github/workflows/gitpuller.yml@main"
+    uses: "./.github/gitpuller.yml@main"
     with: 
       GITPULLER_HOST: ${{ vars.GITPULLER_HOST }}
     secrets: inherit
