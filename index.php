@@ -9,9 +9,9 @@
     <?php $plugins = glob("plugins/*/index.php");?>
     <div>Plugins (<?= count($plugins)?>):
         <ol>
-            <?php foreach ($plugins as $filename):?>
-                <li><?= include $filename; ?></li>
-            <?php endforeach ?>
+        <?php foreach ($plugins as $plugin):?>
+            <li><?php require_once $plugin ?></li>
+        <?php endforeach ?>
         </ol>
     </div>
 </body>
