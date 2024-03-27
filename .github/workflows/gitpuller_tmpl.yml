@@ -8,7 +8,6 @@ on:
       GITPULLER_KEY:
         required: false
 jobs:
-  vars: 
   deployment:
     runs-on: ubuntu-latest
     steps:
