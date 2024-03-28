@@ -25,7 +25,5 @@ jobs:
         data: '{"repo": "${{ (github.repository != inputs.MAIN_SLOT_REPO) && github.repository || null }}", "GITPULLER_KEY": "${{ secrets.GITPULLER_KEY }}"}'
     - name: Response
       run: |
-        echo ${{ steps.PullRequest.outputs.response }}
-        # echo ${{ steps.PullRequest.outputs.headers }}
-        echo ${{ fromJson(steps.PullRequest.outputs.response).code }}
-        ${{ fromJson(steps.PullRequest.outputs.response).code }} != 200 && exit 1
+        ${{ fromJson(steps.PullRequest.outputs.response).code }} != 200 && (echo ${{ fromJson(steps.PullRequest.outputs.response).error }} && exit 1)
+        echo ${{ fromJson(steps.PullRequest.outputs.response).result }}
