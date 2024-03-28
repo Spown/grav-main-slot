@@ -38,7 +38,7 @@ if (isset($gitpuller_config['GITPULLER_KEY']) && ($gitpuller_config['GITPULLER_K
 }
 
 if ($script_owner != $script_runner) {
-    $j['error'] = "Script owner '$script_owner' and the user running the script '$script_runner' are not the same! Please 'chown' the entore repo to '$script_runner' for GIT to operate it.";
+    $j['error'] = "Script owner '$script_owner' and the user running the script '$script_runner' are not the same! Please 'chown' the entire repo to '$script_runner' for GIT to operate it.";
     $j['code'] = 304;
     output();
 }
@@ -62,12 +62,12 @@ if (isset($_POST['repo'])) {
     }
 }
 
-$descriptorspec = [
+$descriptor_spec = [
     0 => ["pipe", "r"],  // stdin
     1 => ["pipe", "w"],  // stdout
     2 => ["pipe", "w"],  // stderr
 ];
-$process = proc_open((isset($plugin_local_path) ? "cd $plugin_local_path && " : '') . "git fetch --all && git reset --hard && git checkout -q $branch && git pull --ff-only", $descriptorspec, $pipes, dirname(__FILE__), null);
+$process = proc_open((isset($plugin_local_path) ? "cd $plugin_local_path && " : '') . "git fetch --all && git reset --hard && git checkout -q $branch && git pull --ff-only", $descriptor_spec, $pipes, dirname(__FILE__), null);
 $stdout = stream_get_contents($pipes[1]);
 fclose($pipes[1]);
 if ($stdout) {

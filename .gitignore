@@ -2,6 +2,6 @@
 *.log
 
 user/plugins/
-user/themse/
+user/themеs/
 
 gitpuller_config.php
