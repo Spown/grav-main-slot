@@ -11,6 +11,7 @@ require 'gitpuller_config.php';
 header('Content-Type: application/json; charset=utf-8');
 $j = ['code'=>200];
 $plugin_local_path;
+$branch = 'main';
 $script_owner = homogenize_user_name(get_current_user());
 $script_runner = homogenize_user_name(exec('whoami'));
 
@@ -42,6 +43,10 @@ if ($script_owner != $script_runner) {
     output();
 }
 
+if (isset($_POST['$branch'])) {
+    $branch = $_POST['$branch'];
+}
+
 if (isset($_POST['repo'])) {
     $repo_name = preg_replace('/[^\/]*\/?([^\/]*)/', '$1', $_POST['repo'], 1);
     foreach (['plugins', 'themes'] as $subdir) {
@@ -62,7 +67,7 @@ $descriptorspec = [
     1 => ["pipe", "w"],  // stdout
     2 => ["pipe", "w"],  // stderr
 ];
-$process = proc_open((isset($plugin_local_path) ? "cd $plugin_local_path && " : '').'git fetch --all && git reset --hard && git pull --ff-only', $descriptorspec, $pipes, dirname(__FILE__), null);
+$process = proc_open((isset($plugin_local_path) ? "cd $plugin_local_path && " : '') . "git fetch --all && git reset --hard && git checkout -q $branch && git pull --ff-only", $descriptorspec, $pipes, dirname(__FILE__), null);
 $stdout = stream_get_contents($pipes[1]);
 fclose($pipes[1]);
 if ($stdout) {
