@@ -5,6 +5,10 @@ on:
         description: Main project repository, using plugin repos
         default:  false
         type: boolean
+      REPO_BRANCH:
+        description: Repository branch to sync
+        default: main
+        type: string
       GITPULLER_HOST:
         required: true
         type: string
@@ -13,6 +17,7 @@ on:
         required: false
 jobs:
   deployment:
+    if: inputs.REPO_BRANCH == github.ref_name
     runs-on: ubuntu-latest
     steps:
     - name: Deploy

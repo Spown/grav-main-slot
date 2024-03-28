@@ -30,17 +30,18 @@ if (isset($gitpuller_config['DEBUG']) && $gitpuller_config['DEBUG']) {
     $j['debug']['CURRENT_PHP_SCRIPT_RUNNER_USER'] = $script_runner;
 }
 
+if (isset($gitpuller_config['GITPULLER_KEY']) && ($gitpuller_config['GITPULLER_KEY'] != $_POST['GITPULLER_KEY'])) {
+    $j['error'] = 'Access denied!';
+    $j['code'] = 304;
+    output();
+}
+
 if ($script_owner != $script_runner) {
     $j['error'] = "Script owner '$script_owner' and the user running the script '$script_runner' are not the same! Please 'chown' the entore repo to '$script_runner' for GIT to operate it.";
     $j['code'] = 304;
     output();
 }
 
-if (isset($gitpuller_config['GITPULLER_KEY']) && ($gitpuller_config['GITPULLER_KEY'] != $_POST['GITPULLER_KEY'])) {
-    $j['error'] = 'Access denied!';
-    $j['code'] = 304;
-    output();
-}
 if (isset($_POST['repo'])) {
     $repo_name = preg_replace('/[^\/]*\/?([^\/]*)/', '$1', $_POST['repo'], 1);
     foreach (['plugins', 'themes'] as $subdir) {
