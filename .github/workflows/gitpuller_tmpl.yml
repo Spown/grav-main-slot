@@ -25,11 +25,11 @@ jobs:
     - name: Debug
       if: fromJson(steps.PullCommand.outputs.response).debug
       run: echo "${{ toJSON(fromJson(steps.PullCommand.outputs.response).debug) }}"
-    - name: Response
-      id: ResponseCheck
+    - name: Response error
       if: fromJson(steps.PullCommand.outputs.response).code != 200
       run: |
         echo "${{ fromJson(steps.PullCommand.outputs.response).error }}"
         exit 1
     - name: Report
+      if: fromJson(steps.PullCommand.outputs.response).code == 200
       run: echo "${{ fromJson(steps.PullCommand.outputs.response).result }}"
