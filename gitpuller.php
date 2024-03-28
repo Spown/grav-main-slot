@@ -61,7 +61,7 @@ $descriptorspec = [
     1 => ["pipe", "w"],  // stdout
     2 => ["pipe", "w"],  // stderr
 ];
-$process = proc_open((isset($plugin_local_path) ? "cd $plugin_local_path && " : '').'git fetch --all && git reset --hard && git pull', $descriptorspec, $pipes, dirname(__FILE__), null);
+$process = proc_open((isset($plugin_local_path) ? "cd $plugin_local_path && " : '').'git fetch --all && git reset --hard && git pull --ff-only', $descriptorspec, $pipes, dirname(__FILE__), null);
 $stdout = stream_get_contents($pipes[1]);
 fclose($pipes[1]);
 if ($stdout) {
