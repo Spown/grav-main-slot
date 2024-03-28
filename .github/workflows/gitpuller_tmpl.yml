@@ -24,7 +24,7 @@ jobs:
         data: '{"repo": "${{ (github.repository != inputs.MAIN_SLOT_REPO) && github.repository || null }}", "GITPULLER_KEY": "${{ secrets.GITPULLER_KEY }}"}'
     - name: Debug
       if: fromJson(steps.PullCommand.outputs.response).debug
-      run: echo ${{ fromJson(steps.PullCommand.outputs.response.debug) }}
+      run: echo ${{ fromJson(fromJson(steps.PullCommand.outputs.response).debug) }}
     - name: Response
       id: ResponseCheck
       if: fromJson(steps.PullCommand.outputs.response).code != 200
