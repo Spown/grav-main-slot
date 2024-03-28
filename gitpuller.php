@@ -72,7 +72,7 @@ $stderr = stream_get_contents($pipes[2]);
 fclose($pipes[2]);
 if ($stderr) {
     $j['error'] = $stderr;
-    if (preg_match('/^(error|fatal):/', $stderr)) {
+    if (preg_match('/^(error|fatal): /gm', $stderr)) {
         $j['code'] = 500;
     }
 }
