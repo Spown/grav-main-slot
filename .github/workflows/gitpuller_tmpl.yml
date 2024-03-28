@@ -26,5 +26,6 @@ jobs:
     - name: Response
       run: |
         echo ${{ steps.PullRequest.outputs.response }}
-        echo ${{ steps.PullRequest.outputs.headers }}
-        echo ${{ fromJson(steps.PullRequest.outputs.response) }}
+        # echo ${{ steps.PullRequest.outputs.headers }}
+        echo ${{ fromJson(steps.PullRequest.outputs.response).code }}
+        ${{ fromJson(steps.PullRequest.outputs.response).code }} != 200 && exit 1
