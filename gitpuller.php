@@ -1,9 +1,13 @@
 <?php
 require 'gitpuller_config.php';
-$j = [];
+header('Content-Type: application/json; charset=utf-8');
+$j = ['code'=>200];
 $plugin_local_path;
 
 if ($gitpuller_config['GITPULLER_KEY'] && $gitpuller_config['GITPULLER_KEY'] != $_POST['GITPULLER_KEY']) {
+    $j['error'] = 'Access denied';
+    $j['code'] = 304;
+    echo json_encode($j);
     die;
 }
 if ($_POST['repo']) {
@@ -12,9 +16,13 @@ if ($_POST['repo']) {
         $plugin_local_path = 'user/'. $subdir . '/' . $repo_name;
         if (is_dir($plugin_local_path)) {
             break;
-        } else {
-            $plugin_local_path = null;
         }
+    }
+    if (!isset($plugin_local_path)) {
+        $j['error'] = 'repo "'. $_POST['repo'] .'" not installed';
+        $j['code'] = 404;
+        echo json_encode($j);
+        die;
     }
 }
 
@@ -36,5 +44,4 @@ if ($stderr) {
     $j['error'] = $stderr;
 }
 
-header('Content-Type: application/json; charset=utf-8');
 echo json_encode($j);
