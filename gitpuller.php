@@ -5,7 +5,7 @@ $j = ['code'=>200];
 $plugin_local_path;
 
 if (isset($gitpuller_config['GITPULLER_KEY']) && ($gitpuller_config['GITPULLER_KEY'] != $_POST['GITPULLER_KEY'])) {
-    $j['error'] = 'Access denied '.$_POST['GITPULLER_KEY'];
+    $j['error'] = 'Access denied '.json_encode($_POST);
     $j['code'] = 304;
     echo json_encode($j);
     die;
