@@ -1,8 +1,24 @@
 <?php
+function homogenize_user_name($inp=''): string {
+    $ret = '';
+    if ($inp) {
+        $ret = preg_replace("/^[^\\\]*?\\\*?([^\\\]+)$/", "$1", $inp, 1);
+    }
+    return strtolower($ret);
+}
+
 require 'gitpuller_config.php';
 header('Content-Type: application/json; charset=utf-8');
 $j = ['code'=>200];
 $plugin_local_path;
+$script_owner = homogenize_user_name(get_current_user());
+$script_runner = homogenize_user_name(exec('whoami'));
+
+function output() {
+    global $j;
+    echo json_encode($j);
+    die;
+}
 
 if (isset($gitpuller_config['DEBUG']) && $gitpuller_config['DEBUG']) {
     $j['debug']['POST'] = $_POST;
@@ -10,15 +26,20 @@ if (isset($gitpuller_config['DEBUG']) && $gitpuller_config['DEBUG']) {
     $j['debug']['CONTENT_LENGTH'] = $_SERVER['CONTENT_LENGTH'];
     $j['debug']['CONTENT_TYPE'] = $_SERVER['CONTENT_TYPE'];
     $j['debug']['REQUEST_METHOD'] = $_SERVER['REQUEST_METHOD'];
-    $j['debug']['CURRENT_PHP_SCRIPT_OWNER_USER'] = get_current_user();
-    $j['debug']['CURRENT_PHP_SCRIPT_RUNNER_USER'] = exec('whoami');
+    $j['debug']['CURRENT_PHP_SCRIPT_OWNER_USER'] = $script_owner;
+    $j['debug']['CURRENT_PHP_SCRIPT_RUNNER_USER'] = $script_runner;
+}
+
+if ($script_owner != $script_runner) {
+    $j['error'] = "Script owner '$script_owner' and the user running the script '$script_runner' are not the same! Please 'chown' the entore repo to '$script_runner' for GIT to operate it.";
+    $j['code'] = 304;
+    output();
 }
 
 if (isset($gitpuller_config['GITPULLER_KEY']) && ($gitpuller_config['GITPULLER_KEY'] != $_POST['GITPULLER_KEY'])) {
     $j['error'] = 'Access denied!';
     $j['code'] = 304;
-    echo json_encode($j);
-    die;
+    output();
 }
 if (isset($_POST['repo'])) {
     $repo_name = preg_replace('/[^\/]*\/?([^\/]*)/', '$1', $_POST['repo'], 1);
@@ -31,8 +52,7 @@ if (isset($_POST['repo'])) {
     if (!isset($plugin_local_path)) {
         $j['error'] = 'repo "'. $_POST['repo'] .'" not installed';
         $j['code'] = 404;
-        echo json_encode($j);
-        die;
+        output();
     }
 }
 
@@ -57,4 +77,4 @@ if ($stderr) {
     }
 }
 
-echo json_encode($j);
+output();
