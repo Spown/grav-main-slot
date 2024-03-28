@@ -20,8 +20,7 @@ jobs:
       uses: fjogeleit/http-request-action@v1
       with:
         url: '${{ inputs.GITPULLER_HOST }}/gitpuller.php'
-        method: 'POST'
-        customHeaders: '{"Content-Type": "application/json"}'
+        customHeaders: '{"Content-Type": "application/x-www-form-urlencoded"}'
         data: '{"repo": "${{ (github.repository != inputs.MAIN_SLOT_REPO) && github.repository || null }}", "GITPULLER_KEY": "${{ secrets.GITPULLER_KEY }}"}'
     - name: Response
       id: ResponseCheck
