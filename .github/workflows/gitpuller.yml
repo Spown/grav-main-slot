@@ -4,4 +4,5 @@ jobs:
     uses: "./.github/workflows/gitpuller_tmpl.yml"
     with:
       GITPULLER_HOST: ${{ vars.GITPULLER_HOST }}
+      MAIN_SLOT_REPO: true
     secrets: inherit
