@@ -11,11 +11,15 @@
 
 Для минимального функционала требуется добавить в репозиторий следующие файлы:
 - [gitpuller.php](/gitpuller.php) - webhook приёмник.
-- [.github/workflows/gitpuller_tmpl.yml](.github/workflows/gitpuller_tmpl.yml) - GitHub CI шаблон с инструкциями публикации.
-- [.github/workflows/gitpuller.yml](.github/workflows/gitpuller.yml) - GitHub CI инструкция публикации, наследующая шаблон ``gitpuller_tmpl.yml``.
+- [.github/workflows/gitpuller_tmpl.yml](.github/workflows/gitpuller_tmpl.yml) - GitHub CI workflow шаблон с инструкциями публикации.
+- [.github/workflows/gitpuller.yml](.github/workflows/gitpuller.yml) - GitHub CI workflow инструкция публикации, наследующая шаблон ``gitpuller_tmpl.yml``. Наличие этого файла активизирует CI workflow на GitHub.
 
 ### Субрепозитории
-Для синхронизации плагин-субрепозиториев требуется добавить в соотв. репозитории файл ``.github/workflows/gitpuller.yml``, схожий с [gitpuller.yml](.github/workflows/gitpuller.yml), но содержащий точный путь к CI-шаблону [gitpuller_tmpl.yml](.github/workflows/gitpuller_tmpl.yml) основного репозитория. Инструкция ``uses`` в данном примере указывает на репозиторий ``rotenbaron/grav-main-slot`` - это значение требуется заменить на соотв. основного репозитория. Инструкция ``jobs.deployment.with.MAIN_SLOT_REPO`` должна отсутствовать или быть равной ``false``.
+Плагины-субрепозитории должны быть клонированы в ``./user/**/`` основного репозитория на удалённом сервере вручную (конфигурация соотв. репозиториев на GitHub установку не произведёт). Названия директорий, куда субрепозитории будут клонированы, должны соответствовать названиям репозиториев на GitHub: 
+ - ``https://github.com/rotenbaron/grav-main-slot`` -> ``./user/plugins/grav-main-slot``
+ - ``https://github.com/hellkaim/vendure-connector/`` -> ``./user/plugins/vendure-connector``
+
+Для синхронизации плагин-субрепозиториев требуется активировать для них CI workflow, добавив файл ``.github/workflows/gitpuller.yml``, схожий с [gitpuller.yml](.github/workflows/gitpuller.yml), но содержащий точный путь к CI-шаблону [gitpuller_tmpl.yml](.github/workflows/gitpuller_tmpl.yml) основного репозитория. Инструкция ``uses`` в данном примере указывает на репозиторий ``rotenbaron/grav-main-slot`` - это значение требуется заменить на соотв. основного репозитория. Инструкция ``jobs.deployment.with.MAIN_SLOT_REPO`` должна отсутствовать или быть равной ``false``.
 ```yml
 on: push
 jobs:
