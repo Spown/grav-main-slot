@@ -12,7 +12,6 @@ if (isset($gitpuller_config['DEBUG']) && $gitpuller_config['DEBUG']) {
     $j['debug']['REQUEST_METHOD'] = $_SERVER['REQUEST_METHOD'];
     $j['debug']['CURRENT_PHP_SCRIPT_OWNER_USER'] = get_current_user();
     $j['debug']['CURRENT_PHP_SCRIPT_RUNNER_USER'] = exec('whoami');
-
 }
 
 if (isset($gitpuller_config['GITPULLER_KEY']) && ($gitpuller_config['GITPULLER_KEY'] != $_POST['GITPULLER_KEY'])) {
