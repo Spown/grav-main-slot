@@ -29,7 +29,7 @@ jobs:
       id: ResponseCheck
       if: fromJson(steps.PullCommand.outputs.response).code != 200
       run: |
-        echo ${{ fromJson(steps.PullCommand.outputs.response).error }}
+        echo "${{ fromJson(steps.PullCommand.outputs.response).error }}"
         exit 1
     - name: Report
-      run: echo ${{ fromJson(steps.PullCommand.outputs.response).result }}
+      run: echo "${{ fromJson(steps.PullCommand.outputs.response).result }}"
