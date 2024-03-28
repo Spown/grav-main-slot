@@ -10,7 +10,7 @@
     <div>Plugins (<?= count($plugins)?>):
         <ol>
         <?php foreach ($plugins as $plugin):?>
-            <li><?php require_once $plugin ?></li>
+            <li><?php echo $plugin . ': ' ?><?php include_once $plugin ?></li>
         <?php endforeach ?>
         </ol>
     </div>
